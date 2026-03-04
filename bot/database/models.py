@@ -2,6 +2,7 @@
 RefLens — SQLAlchemy Models v2.0
 Merged best of Claude + DeepSeek architectures.
 """
+
 import enum
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -103,7 +104,9 @@ class Channel(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
-    telegram_chat_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
+    telegram_chat_id: Mapped[int] = mapped_column(
+        BigInteger, unique=True, nullable=False
+    )
     title: Mapped[Optional[str]] = mapped_column(String(256))
     username: Mapped[Optional[str]] = mapped_column(String(64))
     invite_link: Mapped[Optional[str]] = mapped_column(Text)
@@ -239,9 +242,7 @@ class Subscription(Base):
     # Relationships
     user: Mapped["User"] = relationship(back_populates="subscription")
 
-    __table_args__ = (
-        Index("idx_subscriptions_period_end", "current_period_end"),
-    )
+    __table_args__ = (Index("idx_subscriptions_period_end", "current_period_end"),)
 
 
 class Payment(Base):

@@ -2,6 +2,7 @@
 RefLens — Throttling Middleware
 Ограничение частоты запросов через Redis.
 """
+
 from typing import Any, Awaitable, Callable, Dict
 
 import structlog
@@ -12,8 +13,8 @@ from redis.asyncio import Redis
 logger = structlog.get_logger(__name__)
 
 # Лимиты по умолчанию (запросов / секунд)
-DEFAULT_RATE_LIMIT = 1      # 1 запрос
-DEFAULT_RATE_PERIOD = 1     # в 1 секунду
+DEFAULT_RATE_LIMIT = 1  # 1 запрос
+DEFAULT_RATE_PERIOD = 1  # в 1 секунду
 
 
 class ThrottlingMiddleware(BaseMiddleware):
@@ -54,9 +55,7 @@ class ThrottlingMiddleware(BaseMiddleware):
             if current > self.rate_limit:
                 logger.warning("Rate limit exceeded", telegram_id=tg_user.id)
                 if isinstance(event, Message):
-                    await event.answer(
-                        "⚠️ Слишком много запросов. Подожди секунду."
-                    )
+                    await event.answer("⚠️ Слишком много запросов. Подожди секунду.")
                 return None
 
         except Exception as e:

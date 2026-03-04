@@ -2,6 +2,7 @@
 RefLens — Subscription Middleware
 Проверяет доступ к платным функциям.
 """
+
 from typing import Any, Awaitable, Callable, Dict, Set
 
 import structlog

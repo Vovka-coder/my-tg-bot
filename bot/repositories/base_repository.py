@@ -2,6 +2,7 @@
 RefLens — Base Repository
 Базовый CRUD-репозиторий. Коммит — на уровне сервиса или хендлера.
 """
+
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar
 
 from sqlalchemy import delete, select, update
@@ -27,9 +28,7 @@ class BaseRepository(Generic[ModelType]):
 
     async def get(self, **filters: Any) -> Optional[ModelType]:
         """Получить одну запись по фильтрам."""
-        result = await self.session.execute(
-            select(self.model).filter_by(**filters)
-        )
+        result = await self.session.execute(select(self.model).filter_by(**filters))
         return result.scalar_one_or_none()
 
     async def get_many(
@@ -64,9 +63,7 @@ class BaseRepository(Generic[ModelType]):
 
     async def delete_by(self, **filters: Any) -> int:
         """Удалить записи по фильтрам. Возвращает количество удалённых."""
-        result = await self.session.execute(
-            delete(self.model).filter_by(**filters)
-        )
+        result = await self.session.execute(delete(self.model).filter_by(**filters))
         await self.session.flush()
         return result.rowcount
 

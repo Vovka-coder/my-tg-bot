@@ -1,6 +1,7 @@
 """
 RefLens — /start handler + онбординг
 """
+
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -42,10 +43,7 @@ CHANNEL_INSTRUCTION_TEXT = (
     "2️⃣ Нажми кнопку ниже когда добавишь"
 )
 
-ALREADY_ONBOARDED_TEXT = (
-    "С возвращением! 👌\n"
-    "Всё готово — переходи к аналитике."
-)
+ALREADY_ONBOARDED_TEXT = "С возвращением! 👌\n" "Всё готово — переходи к аналитике."
 
 CHANNEL_HELP_TEXT = (
     "Как добавить бота администратором:\n\n"
@@ -58,6 +56,7 @@ CHANNEL_HELP_TEXT = (
 
 
 # ─── Клавиатуры ──────────────────────────────────────────────────────────────
+
 
 def consent_kb():
     builder = InlineKeyboardBuilder()
@@ -78,8 +77,14 @@ def channel_kb():
 def main_menu_kb():
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="📈 Аналитика"), KeyboardButton(text="🌳 Дерево связей")],
-            [KeyboardButton(text="⭐ Топ рефереров"), KeyboardButton(text="⚙️ Настройки")],
+            [
+                KeyboardButton(text="📈 Аналитика"),
+                KeyboardButton(text="🌳 Дерево связей"),
+            ],
+            [
+                KeyboardButton(text="⭐ Топ рефереров"),
+                KeyboardButton(text="⚙️ Настройки"),
+            ],
             [KeyboardButton(text="💎 Подписка"), KeyboardButton(text="🆘 Поддержка")],
         ],
         resize_keyboard=True,
@@ -87,6 +92,7 @@ def main_menu_kb():
 
 
 # ─── Handlers ────────────────────────────────────────────────────────────────
+
 
 @router.message(Command("start"))
 async def cmd_start(message: Message, state: FSMContext, db_user=None):
@@ -140,9 +146,7 @@ async def channel_check(callback: CallbackQuery, state: FSMContext):
     Пока — заглушка, завершаем онбординг.
     """
     await state.clear()
-    await callback.message.edit_text(
-        "Готово 🎉 Можем начинать.\n\nВот главное меню:"
-    )
+    await callback.message.edit_text("Готово 🎉 Можем начинать.\n\nВот главное меню:")
     await callback.message.answer(
         "Выбери раздел:",
         reply_markup=main_menu_kb(),

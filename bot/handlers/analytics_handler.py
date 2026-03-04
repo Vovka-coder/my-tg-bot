@@ -2,6 +2,7 @@
 RefLens — Analytics Handler
 /stats и кнопка «📈 Аналитика» из главного меню.
 """
+
 import logging
 from typing import Any
 
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 # ─── Клавиатуры ──────────────────────────────────────────────────────────────
+
 
 def period_kb(channel_id: int) -> Any:
     builder = InlineKeyboardBuilder()
@@ -39,6 +41,7 @@ def stats_actions_kb(channel_id: int) -> Any:
 
 # ─── /stats и кнопка меню ────────────────────────────────────────────────────
 
+
 @router.message(Command("stats"))
 @router.message(F.text == "📈 Аналитика")
 async def cmd_stats(
@@ -56,8 +59,7 @@ async def cmd_stats(
 
     if not channels:
         await message.answer(
-            "У тебя пока нет подключённых каналов.\n"
-            "Подключи первый через /connect."
+            "У тебя пока нет подключённых каналов.\n" "Подключи первый через /connect."
         )
         return
 
@@ -81,6 +83,7 @@ async def cmd_stats(
 
 # ─── Выбор канала (если несколько) ───────────────────────────────────────────
 
+
 @router.callback_query(F.data.startswith("stats:channel:"))
 async def select_channel(callback: CallbackQuery) -> None:
     channel_id = int(callback.data.split(":")[2])
@@ -92,6 +95,7 @@ async def select_channel(callback: CallbackQuery) -> None:
 
 
 # ─── Выбор периода → показ статистики ────────────────────────────────────────
+
 
 @router.callback_query(F.data.startswith("stats:period:"))
 async def show_stats(
@@ -138,6 +142,7 @@ async def show_stats(
 
 
 # ─── Кнопка «Назад» ──────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data == "stats:back")
 async def stats_back(

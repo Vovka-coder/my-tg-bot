@@ -3,6 +3,7 @@ RefLens — Channel Handler
 Подключение канала: получаем @username или пересланное сообщение,
 проверяем права бота через Telegram API, сохраняем в БД.
 """
+
 import logging
 from typing import Any, Dict
 
@@ -20,12 +21,14 @@ logger = logging.getLogger(__name__)
 
 # ─── Клавиатуры ──────────────────────────────────────────────────────────────
 
+
 def retry_kb():
     builder = InlineKeyboardBuilder()
     builder.button(text="🔄 Попробовать снова", callback_data="channel:check")
     builder.button(text="❓ Помощь", callback_data="channel:help")
     builder.adjust(1)
     return builder.as_markup()
+
 
 def connected_kb():
     builder = InlineKeyboardBuilder()
@@ -34,12 +37,20 @@ def connected_kb():
     builder.adjust(1)
     return builder.as_markup()
 
+
 def main_menu_kb():
     from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="📈 Аналитика"), KeyboardButton(text="🌳 Дерево связей")],
-            [KeyboardButton(text="⭐ Топ рефереров"), KeyboardButton(text="⚙️ Настройки")],
+            [
+                KeyboardButton(text="📈 Аналитика"),
+                KeyboardButton(text="🌳 Дерево связей"),
+            ],
+            [
+                KeyboardButton(text="⭐ Топ рефереров"),
+                KeyboardButton(text="⚙️ Настройки"),
+            ],
             [KeyboardButton(text="💎 Подписка"), KeyboardButton(text="🆘 Поддержка")],
         ],
         resize_keyboard=True,
@@ -47,6 +58,7 @@ def main_menu_kb():
 
 
 # ─── Шаг 1: пользователь нажал «Я добавил, проверить» ────────────────────────
+
 
 @router.callback_query(F.data == "channel:check")
 async def ask_for_channel(callback: CallbackQuery, state: FSMContext) -> None:
@@ -60,6 +72,7 @@ async def ask_for_channel(callback: CallbackQuery, state: FSMContext) -> None:
 
 
 # ─── Шаг 2: пользователь прислал @username ────────────────────────────────────
+
 
 @router.message(OnboardingStates.waiting_channel_add, F.text.startswith("@"))
 async def verify_channel_by_username(
@@ -75,6 +88,7 @@ async def verify_channel_by_username(
 
 # ─── Шаг 2б: пользователь переслал сообщение из канала ───────────────────────
 
+
 @router.message(OnboardingStates.waiting_channel_add, F.forward_from_chat)
 async def verify_channel_by_forward(
     message: Message,
@@ -89,6 +103,7 @@ async def verify_channel_by_forward(
 
 # ─── Шаг 2в: прислал что-то непонятное ───────────────────────────────────────
 
+
 @router.message(OnboardingStates.waiting_channel_add)
 async def wrong_input(message: Message) -> None:
     await message.answer(
@@ -98,6 +113,7 @@ async def wrong_input(message: Message) -> None:
 
 
 # ─── Основная логика проверки ─────────────────────────────────────────────────
+
 
 async def _verify_and_save(
     message: Message,
@@ -199,6 +215,7 @@ async def _verify_and_save(
 
 
 # ─── Help ──────────────────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data == "channel:help")
 async def channel_help(callback: CallbackQuery) -> None:

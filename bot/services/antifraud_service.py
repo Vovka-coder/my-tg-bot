@@ -2,6 +2,7 @@
 RefLens — AntifraudService
 Проверяет участника канала по настраиваемым правилам.
 """
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
@@ -50,7 +51,9 @@ class AntiFraudService:
                     False,
                     "Не удалось определить возраст аккаунта",
                 )
-            age_days = (datetime.utcnow() - member.account_created_at.replace(tzinfo=None)).days
+            age_days = (
+                datetime.utcnow() - member.account_created_at.replace(tzinfo=None)
+            ).days
             if age_days < min_age_days:
                 return AntiFraudResult(
                     False,
@@ -111,12 +114,15 @@ class AntiFraudService:
 
             if min_age_days is not None:
                 if member.account_created_at is None:
-                    results[member.id] = AntiFraudResult(False, "Не удалось определить возраст аккаунта")
+                    results[member.id] = AntiFraudResult(
+                        False, "Не удалось определить возраст аккаунта"
+                    )
                     continue
                 age_days = (now - member.account_created_at.replace(tzinfo=None)).days
                 if age_days < min_age_days:
                     results[member.id] = AntiFraudResult(
-                        False, f"Аккаунт слишком новый ({age_days} дн., требуется {min_age_days})"
+                        False,
+                        f"Аккаунт слишком новый ({age_days} дн., требуется {min_age_days})",
                     )
                     continue
 

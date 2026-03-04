@@ -2,6 +2,7 @@
 RefLens — Tree Handler
 /tree и кнопка «🌳 Дерево связей»
 """
+
 import logging
 from typing import Any
 
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 # ─── Клавиатуры ──────────────────────────────────────────────────────────────
+
 
 def depth_kb(channel_id: int) -> Any:
     builder = InlineKeyboardBuilder()
@@ -38,6 +40,7 @@ def tree_actions_kb(channel_id: int) -> Any:
 
 # ─── /tree и кнопка меню ─────────────────────────────────────────────────────
 
+
 @router.message(Command("tree"))
 @router.message(F.text == "🌳 Дерево связей")
 async def cmd_tree(
@@ -55,8 +58,7 @@ async def cmd_tree(
 
     if not channels:
         await message.answer(
-            "У тебя пока нет подключённых каналов.\n"
-            "Подключи первый через /connect."
+            "У тебя пока нет подключённых каналов.\n" "Подключи первый через /connect."
         )
         return
 
@@ -78,6 +80,7 @@ async def cmd_tree(
 
 # ─── Выбор канала ─────────────────────────────────────────────────────────────
 
+
 @router.callback_query(F.data.startswith("tree:channel:"))
 async def select_channel(callback: CallbackQuery) -> None:
     channel_id = int(callback.data.split(":")[2])
@@ -89,6 +92,7 @@ async def select_channel(callback: CallbackQuery) -> None:
 
 
 # ─── Выбор глубины → построение дерева ───────────────────────────────────────
+
 
 @router.callback_query(F.data.startswith("tree:depth:"))
 async def show_tree(
@@ -127,6 +131,7 @@ async def show_tree(
 
 
 # ─── Назад ────────────────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data == "tree:back")
 async def tree_back(

@@ -3,6 +3,7 @@ RefLens — Tree Service
 WITH RECURSIVE CTE для построения дерева рефералов.
 referrer_id живёт в channel_members, не в users.
 """
+
 from dataclasses import dataclass
 from typing import List, Optional
 

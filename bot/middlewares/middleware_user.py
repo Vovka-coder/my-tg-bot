@@ -2,6 +2,7 @@
 RefLens — User Middleware
 Создаёт/обновляет пользователя в БД и кладёт db_user + user_repo в data.
 """
+
 from typing import Any, Awaitable, Callable, Dict
 
 import structlog
@@ -55,7 +56,9 @@ class UserMiddleware(BaseMiddleware):
                 data["user_repo"] = repo
 
             except Exception as e:
-                logger.error("UserMiddleware failed", telegram_id=tg_user.id, error=str(e))
+                logger.error(
+                    "UserMiddleware failed", telegram_id=tg_user.id, error=str(e)
+                )
                 data["db_user"] = None
                 data["user_repo"] = None
 

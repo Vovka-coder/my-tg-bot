@@ -1,6 +1,7 @@
 """
 RefLens — Celery Tasks: reminders + cleanup
 """
+
 import asyncio
 import logging
 from datetime import datetime, timedelta
@@ -11,7 +12,13 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import selectinload
 
 from bot.config import settings
-from bot.database.models import ActivityLog, Subscription, SubscriptionStatus, SubscriptionTier, User
+from bot.database.models import (
+    ActivityLog,
+    Subscription,
+    SubscriptionStatus,
+    SubscriptionTier,
+    User,
+)
 from bot.database.session import AsyncSessionLocal
 
 logger = logging.getLogger(__name__)
@@ -40,7 +47,9 @@ async def _send_reminders_async() -> None:
                 select(User)
                 .join(User.subscription)
                 .where(
-                    Subscription.tier.in_([SubscriptionTier.PRO, SubscriptionTier.BUSINESS]),
+                    Subscription.tier.in_(
+                        [SubscriptionTier.PRO, SubscriptionTier.BUSINESS]
+                    ),
                     Subscription.current_period_end <= deadline,
                     Subscription.current_period_end > after,
                     Subscription.status == SubscriptionStatus.ACTIVE,
@@ -53,9 +62,14 @@ async def _send_reminders_async() -> None:
             for user in users:
                 try:
                     await bot.send_message(user.telegram_id, text)
-                    logger.info("Reminder sent", extra={"telegram_id": user.telegram_id})
+                    logger.info(
+                        "Reminder sent", extra={"telegram_id": user.telegram_id}
+                    )
                 except Exception as e:
-                    logger.warning("Failed to send reminder", extra={"telegram_id": user.telegram_id, "error": str(e)})
+                    logger.warning(
+                        "Failed to send reminder",
+                        extra={"telegram_id": user.telegram_id, "error": str(e)},
+                    )
 
     await bot.session.close()
 
