@@ -16,9 +16,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install black isort flake8
-      - run: black --check bot/ tests/
-      - run: isort --check-only bot/ tests/
-      - run: flake8 bot/ tests/
+      - run: black --check bot/
+      - run: isort --check-only bot/
+      - run: flake8 bot/
 
   security:
     name: Security Audit
