@@ -17,6 +17,16 @@ from bot.handlers import start
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
 
+from bot.handlers import start, channel
+dp.include_router(start.router)
+dp.include_router(channel.router)
+
+from bot.handlers import start, channel, analytics
+dp.include_router(analytics.router)
+
+from bot.handlers import start, channel, analytics, tree
+dp.include_router(tree.router)
+
 logger = structlog.get_logger(__name__)
 
 
