@@ -1,4 +1,3 @@
-import asyncio
 import logging
 
 import structlog
@@ -35,6 +34,7 @@ async def main() -> None:
     # Sentry (если настроен)
     if settings.SENTRY_DSN:
         import sentry_sdk
+
         sentry_sdk.init(dsn=settings.SENTRY_DSN, environment=settings.APP_ENV)
         logger.info("Sentry initialized")
 
