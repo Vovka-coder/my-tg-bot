@@ -1,0 +1,30 @@
+{
+  "_comment": "English locale file. All bot texts ONLY here, never hardcoded!",
+  "common": {
+    "error": "Something went wrong. Please try again or contact support.",
+    "error_external_api": "Service temporarily unavailable. We're on it 🔧",
+    "cancel": "Cancel",
+    "back": "← Back",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "start": {
+    "welcome": "Hello, {name}! 👋\n\nI'm [bot name]. [One line about bot value].",
+    "already_registered": "Welcome back, {name}! 👋"
+  },
+  "subscription": {
+    "active": "✅ Subscription active until {date}",
+    "expired": "❌ Subscription expired",
+    "trial": "🎁 Trial period until {date}",
+    "renewed": "🎉 Subscription renewed until {date}!",
+    "cancelled": "Subscription cancelled. Access remains until {date}."
+  },
+  "payment": {
+    "success": "✅ Payment successful! Subscription active until {date}.",
+    "failed": "❌ Payment failed. Please try another card or contact support."
+  },
+  "support": {
+    "message": "Any questions: @your_support_username\n\nResponse time: up to 1 hour during business hours."
+  }
+}
