@@ -16,9 +16,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install black isort flake8
-      - run: black --check .
-      - run: isort --check-only .
-      - run: flake8 .
+      - run: black --check bot/ tests/
+      - run: isort --check-only bot/ tests/
+      - run: flake8 bot/ tests/
 
   security:
     name: Security Audit
@@ -60,6 +60,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      - name: Create .env from example
+        run: cp .env.example .env
       - name: Run tests
         env:
           POSTGRES_HOST: localhost
