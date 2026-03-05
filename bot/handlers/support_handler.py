@@ -1,5 +1,4 @@
 """RefLens — Support Handler."""
-
 import logging
 import re
 from typing import Any
@@ -167,10 +166,14 @@ async def handle_user_message(
                 caption=f"Документ от {db_user.telegram_id}",
             )
 
-        await message.answer("✅ Сообщение отправлено. Ответим в этом чате.")
+        await message.answer(
+            "✅ Сообщение отправлено. Ответим в этом чате."
+        )
     except Exception as e:
         logger.error("Failed to forward to support", error=str(e))
-        await message.answer("❌ Ошибка при отправке. Попробуй позже или напиши @reflens_support")
+        await message.answer(
+            "❌ Ошибка при отправке. Попробуй позже или напиши @reflens_support"
+        )
 
     await state.clear()
 
