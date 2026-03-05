@@ -5,7 +5,7 @@ RefLens — Channel Handler
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from aiogram import Bot, F, Router
 from aiogram.exceptions import TelegramBadRequest, TelegramForbiddenError
@@ -43,14 +43,8 @@ def main_menu_kb():
 
     return ReplyKeyboardMarkup(
         keyboard=[
-            [
-                KeyboardButton(text="📈 Аналитика"),
-                KeyboardButton(text="🌳 Дерево связей"),
-            ],
-            [
-                KeyboardButton(text="⭐ Топ рефереров"),
-                KeyboardButton(text="⚙️ Настройки"),
-            ],
+            [KeyboardButton(text="📈 Аналитика"), KeyboardButton(text="🌳 Дерево связей")],
+            [KeyboardButton(text="⭐ Топ рефереров"), KeyboardButton(text="⚙️ Настройки")],
             [KeyboardButton(text="💎 Подписка"), KeyboardButton(text="🆘 Поддержка")],
         ],
         resize_keyboard=True,

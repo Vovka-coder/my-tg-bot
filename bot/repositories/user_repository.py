@@ -71,7 +71,7 @@ class UserRepository(BaseRepository[User]):
         """Пользователи чья подписка истекает через N дней (для напоминаний)."""
         from datetime import timedelta
 
-        from sqlalchemy import and_, func
+        from sqlalchemy import and_
 
         now = datetime.utcnow()
         deadline = now + timedelta(days=days)

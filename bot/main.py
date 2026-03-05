@@ -14,20 +14,9 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import channel, start
+from bot.handlers import analytics, channel, start, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
-
-dp.include_router(start.router)
-dp.include_router(channel.router)
-
-from bot.handlers import analytics, channel, start
-
-dp.include_router(analytics.router)
-
-from bot.handlers import analytics, channel, start, tree
-
-dp.include_router(tree.router)
 
 logger = structlog.get_logger(__name__)
 
@@ -49,7 +38,6 @@ async def main() -> None:
         sentry_sdk.init(dsn=settings.SENTRY_DSN, environment=settings.APP_ENV)
         logger.info("Sentry initialized")
 
-    # Redis — для FSM и throttling
     redis = Redis.from_url(settings.REDIS_URL, decode_responses=False)
     storage = RedisStorage(
         redis=redis,
@@ -62,12 +50,12 @@ async def main() -> None:
     )
     dp = Dispatcher(storage=storage)
 
-    # Пробрасываем зависимости в data — доступны во всех middleware и handlers
+    # Зависимости доступны во всех middleware и handlers
     dp["redis"] = redis
     dp["session_maker"] = AsyncSessionLocal
     dp["settings"] = settings
 
-    # Middleware (порядок важен: throttling → user)
+    # Middleware (порядок: throttling → user)
     dp.message.middleware(ThrottlingMiddleware(redis))
     dp.callback_query.middleware(ThrottlingMiddleware(redis))
     dp.message.middleware(UserMiddleware())
@@ -75,6 +63,9 @@ async def main() -> None:
 
     # Роутеры
     dp.include_router(start.router)
+    dp.include_router(channel.router)
+    dp.include_router(analytics.router)
+    dp.include_router(tree.router)
 
     try:
         logger.info("Starting polling...", env=settings.APP_ENV)
