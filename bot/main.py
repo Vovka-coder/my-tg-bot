@@ -1,7 +1,6 @@
-"""
-RefLens — Entry point
-"""
+"""RefLens — Entry point."""
 
+import asyncio
 import logging
 
 import sentry_sdk
@@ -14,7 +13,7 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import analytics, channel, start, tree
+from bot.handlers import analytics, channel, start, subscription, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
 
@@ -50,25 +49,27 @@ async def main() -> None:
     )
     dp = Dispatcher(storage=storage)
 
-    # Зависимости доступны во всех middleware и handlers
     dp["redis"] = redis
     dp["session_maker"] = AsyncSessionLocal
     dp["settings"] = settings
 
-    # Middleware (порядок: throttling → user)
     dp.message.middleware(ThrottlingMiddleware(redis))
     dp.callback_query.middleware(ThrottlingMiddleware(redis))
     dp.message.middleware(UserMiddleware())
     dp.callback_query.middleware(UserMiddleware())
 
-    # Роутеры
     dp.include_router(start.router)
     dp.include_router(channel.router)
     dp.include_router(analytics.router)
     dp.include_router(tree.router)
+    dp.include_router(subscription.router)
 
     try:
         logger.info("Starting polling...", env=settings.APP_ENV)
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
         await on_shutdown(bot, redis)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
