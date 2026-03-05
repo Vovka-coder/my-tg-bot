@@ -13,11 +13,13 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import analytics, channel, start, subscription, tree
+from bot.handlers import analytics, channel, start, subscription, support, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
 
 logger = structlog.get_logger(__name__)
+
+dp.include_router(support.router)
 
 
 async def on_shutdown(bot: Bot, redis: Redis) -> None:
