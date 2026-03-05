@@ -38,7 +38,8 @@ class TreeService:
         """
         depth_limit = min(max_depth, MAX_SAFE_DEPTH) if max_depth else MAX_SAFE_DEPTH
 
-        query = text("""
+        query = text(
+            """
             WITH RECURSIVE tree AS (
                 -- Корни: участники у которых нет реферера В ЭТОМ канале
                 SELECT
@@ -75,7 +76,8 @@ class TreeService:
                AND children.channel_id = :channel_id
             GROUP BY tree.member_id, tree.username, tree.referrer_id, tree.level
             ORDER BY tree.level, direct_count DESC, tree.member_id
-        """)
+        """
+        )
 
         result = await self.session.execute(
             query,
