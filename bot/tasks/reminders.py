@@ -28,17 +28,12 @@ async def _send_reminders_async() -> None:
     bot = Bot(token=settings.BOT_TOKEN)
     now = datetime.utcnow()
 
+    msg_1day = "⚠️ Подписка истекает <b>завтра</b>!\n\nПродли сейчас → /tariffs"
+    msg_3day = "📅 Подписка истекает через 3 дня.\n\nПродли заранее → /tariffs"
+
     reminder_windows = [
-        (
-            now + timedelta(days=1),
-            now,
-            "⚠️ Подписка истекает <b>завтра</b>!\n\nПродли сейчас чтобы не потерять доступ к аналитике → /tariffs",
-        ),
-        (
-            now + timedelta(days=3),
-            now + timedelta(days=2),
-            "📅 Подписка истекает через 3 дня.\n\nЧтобы не прерывать аналитику — продли заранее → /tariffs",
-        ),
+        (now + timedelta(days=1), now, msg_1day),
+        (now + timedelta(days=3), now + timedelta(days=2), msg_3day),
     ]
 
     async with AsyncSessionLocal() as session:
@@ -51,7 +46,7 @@ async def _send_reminders_async() -> None:
                     Subscription.current_period_end <= deadline,
                     Subscription.current_period_end > after,
                     Subscription.status == SubscriptionStatus.ACTIVE,
-                    Subscription.auto_renew == True,
+                    Subscription.auto_renew.is_(True),
                 )
                 .options(selectinload(User.subscription))
             )

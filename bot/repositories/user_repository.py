@@ -70,7 +70,8 @@ class UserRepository(BaseRepository[User]):
     async def get_expiring_subscriptions(self, days: int = 3) -> List[User]:
         """Пользователи чья подписка истекает через N дней (для напоминаний)."""
         from datetime import timedelta
-        from sqlalchemy import and_, func
+
+        from sqlalchemy import and_
 
         now = datetime.utcnow()
         deadline = now + timedelta(days=days)

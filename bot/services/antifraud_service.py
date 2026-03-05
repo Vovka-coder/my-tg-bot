@@ -10,7 +10,7 @@ from typing import Optional
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.database.models import ActivityLog, ActivityEventType, Channel, ChannelMember
+from bot.database.models import ActivityEventType, ActivityLog, Channel, ChannelMember
 
 
 @dataclass
