@@ -7,7 +7,8 @@ from typing import Any, Awaitable, Callable, Dict
 
 import structlog
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject, User as TelegramUser
+from aiogram.types import TelegramObject
+from aiogram.types import User as TelegramUser
 
 from bot.repositories.user_repository import UserRepository
 

@@ -14,20 +14,18 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import start
+from bot.handlers import channel, start
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
-
-from bot.handlers import start, channel
 
 dp.include_router(start.router)
 dp.include_router(channel.router)
 
-from bot.handlers import start, channel, analytics
+from bot.handlers import analytics, channel, start
 
 dp.include_router(analytics.router)
 
-from bot.handlers import start, channel, analytics, tree
+from bot.handlers import analytics, channel, start, tree
 
 dp.include_router(tree.router)
 
