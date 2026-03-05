@@ -81,9 +81,7 @@ class SubscriptionMiddleware(BaseMiddleware):
 
         return SubscriptionTier.FREE
 
-    async def _send_upgrade_message(
-        self, event: TelegramObject, required_tier: str
-    ) -> None:
+    async def _send_upgrade_message(self, event: TelegramObject, required_tier: str) -> None:
         tier_names = {"pro": "Pro (790 ₽/мес)", "business": "Business (1990 ₽/мес)"}
         text = (
             f"🔒 Эта функция доступна на тарифе {tier_names.get(required_tier, required_tier)}.\n\n"

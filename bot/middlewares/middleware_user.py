@@ -56,9 +56,7 @@ class UserMiddleware(BaseMiddleware):
                 data["user_repo"] = repo
 
             except Exception as e:
-                logger.error(
-                    "UserMiddleware failed", telegram_id=tg_user.id, error=str(e)
-                )
+                logger.error("UserMiddleware failed", telegram_id=tg_user.id, error=str(e))
                 data["db_user"] = None
                 data["user_repo"] = None
 

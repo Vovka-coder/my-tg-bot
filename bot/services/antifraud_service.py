@@ -51,9 +51,7 @@ class AntiFraudService:
                     False,
                     "Не удалось определить возраст аккаунта",
                 )
-            age_days = (
-                datetime.utcnow() - member.account_created_at.replace(tzinfo=None)
-            ).days
+            age_days = (datetime.utcnow() - member.account_created_at.replace(tzinfo=None)).days
             if age_days < min_age_days:
                 return AntiFraudResult(
                     False,

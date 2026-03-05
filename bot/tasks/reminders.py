@@ -47,9 +47,7 @@ async def _send_reminders_async() -> None:
                 select(User)
                 .join(User.subscription)
                 .where(
-                    Subscription.tier.in_(
-                        [SubscriptionTier.PRO, SubscriptionTier.BUSINESS]
-                    ),
+                    Subscription.tier.in_([SubscriptionTier.PRO, SubscriptionTier.BUSINESS]),
                     Subscription.current_period_end <= deadline,
                     Subscription.current_period_end > after,
                     Subscription.status == SubscriptionStatus.ACTIVE,
@@ -62,9 +60,7 @@ async def _send_reminders_async() -> None:
             for user in users:
                 try:
                     await bot.send_message(user.telegram_id, text)
-                    logger.info(
-                        "Reminder sent", extra={"telegram_id": user.telegram_id}
-                    )
+                    logger.info("Reminder sent", extra={"telegram_id": user.telegram_id})
                 except Exception as e:
                     logger.warning(
                         "Failed to send reminder",
@@ -77,9 +73,7 @@ async def _send_reminders_async() -> None:
 async def _cleanup_logs_async() -> None:
     cutoff = datetime.utcnow() - timedelta(days=90)
     async with AsyncSessionLocal() as session:
-        result = await session.execute(
-            delete(ActivityLog).where(ActivityLog.created_at < cutoff)
-        )
+        result = await session.execute(delete(ActivityLog).where(ActivityLog.created_at < cutoff))
         await session.commit()
         logger.info("Cleaned up old logs", extra={"deleted": result.rowcount})
 

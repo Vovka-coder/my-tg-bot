@@ -48,9 +48,7 @@ class BaseRepository(Generic[ModelType]):
         result = await self.session.execute(query)
         return list(result.scalars().all())
 
-    async def update(
-        self, record_id: int, values: Dict[str, Any]
-    ) -> Optional[ModelType]:
+    async def update(self, record_id: int, values: Dict[str, Any]) -> Optional[ModelType]:
         """Обновить запись по id и вернуть обновлённую."""
         result = await self.session.execute(
             update(self.model)
@@ -69,7 +67,5 @@ class BaseRepository(Generic[ModelType]):
 
     async def exists(self, **filters: Any) -> bool:
         """Проверить существование записи."""
-        result = await self.session.execute(
-            select(self.model).filter_by(**filters).limit(1)
-        )
+        result = await self.session.execute(select(self.model).filter_by(**filters).limit(1))
         return result.first() is not None

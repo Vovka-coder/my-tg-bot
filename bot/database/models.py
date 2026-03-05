@@ -82,9 +82,7 @@ class User(Base):
     consent_given: Mapped[bool] = mapped_column(Boolean, default=False)
     consent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
@@ -104,9 +102,7 @@ class Channel(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
-    telegram_chat_id: Mapped[int] = mapped_column(
-        BigInteger, unique=True, nullable=False
-    )
+    telegram_chat_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
     title: Mapped[Optional[str]] = mapped_column(String(256))
     username: Mapped[Optional[str]] = mapped_column(String(64))
     invite_link: Mapped[Optional[str]] = mapped_column(Text)
@@ -114,9 +110,7 @@ class Channel(Base):
     # JSONB для гибких настроек антифрода (DeepSeek)
     # Пример: {"min_account_age_days": 7, "min_messages_count": 1}
     settings: Mapped[Dict[str, Any]] = mapped_column(JSONB, default=dict)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
     owner: Mapped["User"] = relationship(back_populates="channels")
@@ -137,9 +131,7 @@ class ChannelMember(Base):
     __tablename__ = "channel_members"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    channel_id: Mapped[int] = mapped_column(
-        ForeignKey("channels.id", ondelete="CASCADE")
-    )
+    channel_id: Mapped[int] = mapped_column(ForeignKey("channels.id", ondelete="CASCADE"))
     telegram_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
     username: Mapped[Optional[str]] = mapped_column(String(64))
     # Реферальная привязка — самоссылка
@@ -147,15 +139,11 @@ class ChannelMember(Base):
         ForeignKey("channel_members.id", ondelete="SET NULL")
     )
     # Антифрод-метаданные
-    account_created_at: Mapped[Optional[datetime]] = mapped_column(
-        DateTime(timezone=True)
-    )
+    account_created_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     is_bot: Mapped[bool] = mapped_column(Boolean, default=False)
     is_premium: Mapped[bool] = mapped_column(Boolean, default=False)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
-    status: Mapped[MemberStatus] = mapped_column(
-        Enum(MemberStatus), default=MemberStatus.MEMBER
-    )
+    status: Mapped[MemberStatus] = mapped_column(Enum(MemberStatus), default=MemberStatus.MEMBER)
     joined_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     left_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     last_seen: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
@@ -184,17 +172,11 @@ class ActivityLog(Base):
     __tablename__ = "activity_log"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    member_id: Mapped[int] = mapped_column(
-        ForeignKey("channel_members.id", ondelete="CASCADE")
-    )
-    event_type: Mapped[ActivityEventType] = mapped_column(
-        Enum(ActivityEventType), nullable=False
-    )
+    member_id: Mapped[int] = mapped_column(ForeignKey("channel_members.id", ondelete="CASCADE"))
+    event_type: Mapped[ActivityEventType] = mapped_column(Enum(ActivityEventType), nullable=False)
     # JSONB для доп. данных: тип реакции, длина сообщения и т.д. (DeepSeek)
     metadata: Mapped[Optional[Dict[str, Any]]] = mapped_column(JSONB)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
     member: Mapped["ChannelMember"] = relationship(back_populates="activity_logs")
@@ -213,9 +195,7 @@ class Subscription(Base):
     __tablename__ = "subscriptions"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), unique=True
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True)
     tier: Mapped[SubscriptionTier] = mapped_column(
         Enum(SubscriptionTier), default=SubscriptionTier.FREE
     )
@@ -223,18 +203,12 @@ class Subscription(Base):
         Enum(SubscriptionStatus), default=SubscriptionStatus.ACTIVE
     )
     trial_ends_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
-    current_period_start: Mapped[Optional[datetime]] = mapped_column(
-        DateTime(timezone=True)
-    )
-    current_period_end: Mapped[Optional[datetime]] = mapped_column(
-        DateTime(timezone=True)
-    )
+    current_period_start: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    current_period_end: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     frozen_until: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
     auto_renew: Mapped[bool] = mapped_column(Boolean, default=True)
     cancel_reason: Mapped[Optional[str]] = mapped_column(String(64))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
@@ -260,9 +234,7 @@ class Payment(Base):
     )
     provider: Mapped[str] = mapped_column(String(32))  # yookassa / telegram_stars
     provider_payment_id: Mapped[Optional[str]] = mapped_column(String(256))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
     user: Mapped["User"] = relationship(back_populates="payments")

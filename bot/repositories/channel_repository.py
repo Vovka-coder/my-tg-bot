@@ -21,9 +21,7 @@ class ChannelRepository(BaseRepository[Channel]):
 
     async def get_user_channels(self, owner_id: int) -> List[Channel]:
         result = await self.session.execute(
-            select(Channel).where(
-                Channel.owner_id == owner_id, Channel.is_active == True
-            )
+            select(Channel).where(Channel.owner_id == owner_id, Channel.is_active == True)
         )
         return list(result.scalars().all())
 

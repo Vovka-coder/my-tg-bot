@@ -65,8 +65,7 @@ async def ask_for_channel(callback: CallbackQuery, state: FSMContext) -> None:
     """Просим ввести @username канала или переслать сообщение из него."""
     await state.set_state(OnboardingStates.waiting_channel_add)
     await callback.message.edit_text(
-        "Отправь @username канала или перешли любое сообщение из него.\n\n"
-        "Пример: @mychannel"
+        "Отправь @username канала или перешли любое сообщение из него.\n\n" "Пример: @mychannel"
     )
     await callback.answer()
 
