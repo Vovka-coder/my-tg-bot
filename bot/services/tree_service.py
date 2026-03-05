@@ -3,7 +3,6 @@ RefLens - Tree Service
 WITH RECURSIVE CTE for building referral tree.
 referrer_id lives in channel_members, not in users.
 """
-
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -12,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 MAX_SAFE_DEPTH = 15
 
+# fmt: off
 _TREE_QUERY = text(
     """
     WITH RECURSIVE tree AS (
@@ -50,6 +50,7 @@ _TREE_QUERY = text(
     ORDER BY tree.level, direct_count DESC, tree.member_id
     """
 )
+# fmt: on
 
 
 @dataclass
