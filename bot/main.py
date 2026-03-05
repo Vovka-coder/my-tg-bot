@@ -14,9 +14,11 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import analytics, channel, start, tree
+from bot.handlers import analytics, channel, start, subscription, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
+
+dp.include_router(subscription.router)
 
 logger = structlog.get_logger(__name__)
 
