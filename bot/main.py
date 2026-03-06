@@ -13,11 +13,9 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import analytics, channel, start, subscription, support, tree
+from bot.handlers import analytics, channel, start, subscription, support, support_handler, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
-
-from bot.handlers import analytics, channel, start, subscription, support_handler, tree
 
 dp.include_router(support_handler.router)
 
