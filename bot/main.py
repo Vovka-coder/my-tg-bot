@@ -13,7 +13,7 @@ from redis.asyncio import Redis
 
 from bot.config import settings
 from bot.database.session import AsyncSessionLocal
-from bot.handlers import analytics, channel, start, subscription, tree
+from bot.handlers import analytics, channel, start, subscription, support_handler, tree
 from bot.middlewares.throttling import ThrottlingMiddleware
 from bot.middlewares.user import UserMiddleware
 
@@ -63,6 +63,7 @@ async def main() -> None:
     dp.include_router(analytics.router)
     dp.include_router(tree.router)
     dp.include_router(subscription.router)
+    dp.include_router(support_handler.router)
 
     try:
         logger.info("Starting polling...", env=settings.APP_ENV)

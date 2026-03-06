@@ -1,3 +1,5 @@
+"""RefLens — python -m bot entry point."""
+
 import asyncio
 
 from bot.main import main
